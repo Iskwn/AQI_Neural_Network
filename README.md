@@ -42,7 +42,7 @@ I decided to build this project to get a better understanding of how Machine Lea
     -  Additional Pollutants( NO2, O3, PM10)  
     -  Wind Speed and Direction  
     -  Humidity  
--Target Cities: Tokyo, Moscow, Berlin, Quebec, Warsaw, Venice, Paris, London, Delhi, Beijing
+-Target Cities: Tokyo, Berlin, Quebec, Warsaw, Venice, Paris, London, Delhi, Beijing
 
 ## Challenges
 
@@ -53,7 +53,7 @@ Append as necessary during Building
 ## Future Work
 
 - Add more options for Predictions (e.g. predict PM2.5, PM10, O3, and NO2 instead of just PM2.5)  
-- Create a Web Interface for the Model (Likely via Steamlit)
+- Create a Web Interface for the Model (Likely via Streamlit)
 
 ## Program Requirements
 
