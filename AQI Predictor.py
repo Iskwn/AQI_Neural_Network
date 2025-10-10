@@ -3,6 +3,8 @@ import numpy as np
 import pandas as pd
 import torch.nn as nn
 import torch.optim as optim
+import requests #grab from OpenAQ
+import matplotlib #Visualize Outputs
 from torch.utils.data import DataLoader, TensorDataset
 
 
@@ -33,8 +35,8 @@ class Network(nn.Module):
         return x
     
 
-    
-
+    def getData(city, pollutant, date_from, date_to):
+        url = "https://openaq.org"
 #           Data Parameters
 input_size = 5 #Placeholder as I don't have the data yet
 hidden_size = 64 #Placeholder as I don't have the data yet
