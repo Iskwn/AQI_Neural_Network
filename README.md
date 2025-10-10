@@ -35,13 +35,13 @@ I decided to build this project to get a better understanding of how Machine Lea
 -Architecture: Basic 3-layer feedforward neural network [Will Later Transition to a more appropriate stucture]  
 -Dataset: OpenAQ Air Quality measurements  
 -Current Features:  
-    - Historical PM2.5 Levels  
-    - Temperature  
-    - Time Features (day, season)  
+    -  Historical PM2.5 Levels  
+    -  Temperature  
+    -  Time Features (day, season)  
 -Future Features:  
-    - Additional Pollutants( NO2, O3, PM10)  
-    - Wind Speed and Direction  
-    - Humidity  
+    -  Additional Pollutants( NO2, O3, PM10)  
+    -  Wind Speed and Direction  
+    -  Humidity  
 -Target Cities: Tokyo, Moscow, Berlin, Quebec, Warsaw, Venice, Paris, London, Delhi, Beijing
 
 ## Challenges
