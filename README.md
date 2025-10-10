@@ -29,60 +29,64 @@ I decided to build this project to get a better understanding of how Machine Lea
 
 ## Technical Details
 
--Framework: PyTorch
--Architecture: Basic 3-layer feedforward neural network [Will Later Transition to a more appropriate stucture]
--Dataset: OpenAQ Air Quality measurements
--Current Features:
-    -Historical PM2.5 Levels
-    -Temperature
-    -Time Features (day, season)
--Future Features:
-    -Additional Pollutants( NO2, O3, PM10)
-    -Wind Speed and Direction
-    -Humidity
+-Framework: PyTorch  
+-Architecture: Basic 3-layer feedforward neural network [Will Later Transition to a more appropriate stucture]  
+-Dataset: OpenAQ Air Quality measurements  
+-Current Features:  
+    - Historical PM2.5 Levels
+    - Temperature
+    - Time Features (day, season)
+-Future Features:  
+    - Additional Pollutants( NO2, O3, PM10)
+    - Wind Speed and Direction
+    - Humidity
 -Target Cities: Tokyo, Moscow, Berlin, Quebec, Warsaw, Venice, Paris, London, Delhi, Beijing
 
 ## Challenges
 
-Overall Challenges during the Building Process:
-Finding the optimal model type (10/9/25)
+Overall Challenges during the Building Process:  
+Finding the optimal model type (10/9/25)  
 Append as necessary during Building
 
 ## Future Work
 
--Add more options for Predictions (e.g. predict PM2.5, PM10, O3, and NO2 instead of just PM2.5)
--Create a Web Interface for the Model (Likely via Steamlit)
+- Add more options for Predictions (e.g. predict PM2.5, PM10, O3, and NO2 instead of just PM2.5)  
+- Create a Web Interface for the Model (Likely via Steamlit)
 
 ## Program Requirements
 
-All Library Versions are not hard requirements, they are just the versions I am using at the time of creation.
--Pytorch 2.8.0 or newer
-    [Pytorch Installer](https://pytorch.org)
--Numpy 2.3.2 or newer
-    [Numpy Installer](https://numpy.org/install/)
--Pandas 2.3.3 or newer
-    [Pandas Installer](https://pandas.pydata.org/docs/install.html)
--Git 2.51.0 or newer
-    [Git Installer](https://git-scm.com/downloads)
+All Library Versions are not hard requirements, they are just the versions I am using at the time of creation.  
+-Pytorch 2.8.0 or newer  
+    [Pytorch Installer](https://pytorch.org)  
+-Numpy 2.3.2 or newer  
+    [Numpy Installer](https://numpy.org/install/)  
+-Pandas 2.3.3 or newer  
+    [Pandas Installer](https://pandas.pydata.org/docs/install.html)  
+-Git 2.51.0 or newer  
+    [Git Installer](https://git-scm.com/downloads)  
 
 ## Usage Instructions
 
-Instructions will be tested for accuracy when program is completed
-Clone the Github Repository :
-    - `git clone https://github.com/Iskwn/Air-Quality-Neural-Network.git`
-Travel to new Repo with CD:
-    - `cd ./Air-Quality-Neural-Network`
-Install Necessary Libraries:
-    - `refer to Program Requirements for install links, follow the instructions on the sites.`
+Instructions will be tested for accuracy when program is completed  
+
+Clone the Github Repository :  
+    - `git clone https://github.com/Iskwn/Air-Quality-Neural-Network.git`  
+
+Travel to new Repo with CD:  
+    - `cd ./Air-Quality-Neural-Network`  
+
+Install Necessary Libraries:  
+    - `refer to Program Requirements for install links, follow the instructions on the sites.`  
+
 etc
 
 ## Author
 
-Jariel Reno - Junior in HS
+Jariel Reno - Junior in HS  
 Science Fair Project, 2025
 
 ## Acknowledgements
 
 - `OpenAQ for Air Quality Data`
 - `PyTorch Team for the Model's Framework`
-- `[Kavan](https://github.com/kavan010) for github repository setup references / formatting`
+- [Kavan](https://github.com/kavan010) `for github repository setup references / formatting`
