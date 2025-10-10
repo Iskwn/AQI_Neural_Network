@@ -27,6 +27,8 @@ I decided to build this project to get a better understanding of how Machine Lea
 - Improve Network based on weaknessed identified in previous step
 - Record Results with Matplotlib
 
+### LAST UPDATED 10/10/25
+
 ## Technical Details
 
 -Framework: PyTorch  
@@ -35,7 +37,7 @@ I decided to build this project to get a better understanding of how Machine Lea
 -Current Features:  
     - Historical PM2.5 Levels
     - Temperature
-    - Time Features (day, season)
+    - Time Features (day, season)  
 -Future Features:  
     - Additional Pollutants( NO2, O3, PM10)
     - Wind Speed and Direction
@@ -87,6 +89,6 @@ Science Fair Project, 2025
 
 ## Acknowledgements
 
-- `OpenAQ for Air Quality Data`
-- `PyTorch Team for the Model's Framework`
-- [Kavan](https://github.com/kavan010) `for github repository setup references / formatting`
+- OpenAQ for Air Quality Data
+- PyTorch Team for the Model's Framework
+- [Kavan](https://github.com/kavan010) for github repository setup references / formatting
