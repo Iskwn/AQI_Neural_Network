@@ -42,7 +42,7 @@ I decided to build this project to get a better understanding of how Machine Lea
     -  Additional Pollutants( NO2, O3, PM10)  
     -  Wind Speed and Direction  
     -  Humidity  
--Target Cities: Tokyo, Berlin, Quebec, Warsaw, Venice, Paris, London, Delhi, Beijing
+-Target Cities: Tokyo, Berlin, Quebec, Warsaw, Paris, London, Delhi, Beijing
 
 ## Challenges
 
