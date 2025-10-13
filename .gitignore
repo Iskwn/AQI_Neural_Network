@@ -1,0 +1,41 @@
+# .gitignore
+
+# API keys and secrets
+.env
+config.py
+
+# Python cache
+
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+#Data files
+data/*.csv
+data/*.json
+!data/.gitkeep
+
+#Model files
+models/*.pth
+models/*.pt
+
+#Jupyter Notebook Checkpoints
+.ipnyb_checkpoints/
+
+
+#IDE Files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+#OS Files
+.DS_Store
+Thumbs.db
+
+# Virtual Environments
+venv/
+env/
+ENV/
