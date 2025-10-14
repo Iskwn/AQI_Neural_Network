@@ -11,7 +11,6 @@ import pandas as pd
 import matplotlib #Visualize Outputs
 
 from dotenv import load_dotenv
-import requests #grab from OpenAQ
 from datetime import datetime, date #for prediction lengths
 
 #           Define the Neural Network
