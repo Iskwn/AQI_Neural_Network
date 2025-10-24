@@ -1,6 +1,8 @@
-import os
-import pandas as pd
+import boto3
+import subprocess
 from pathlib import Path
+from botocore import UNSIGNED
+from botocore.client import Config
 
 CitySensors = {
     'Tokyo' : [1214722],
@@ -17,24 +19,81 @@ CitySensors = {
 def downloadData(city,start_year=2016,end_year=2025):
     r'''
         Download AQI Data from S3 Bucket
+        LOCATION_ID (int): The ID of the Sensor at a location (refer to CitySensors dictionary)
+        YEAR (int): The Year the Data is being categorized as / pulled from (e.g. pulling data from 2016 or storing it as data from 2016)
         What's going into the cmd prompt:
             aws s3 cp ^
             --no-sign-request ^
             --recursive ^
             "s3://openaq-data-archive/records/csv.gz/locationid=LOCATION_ID/year=YEAR" ^ (Grab all Files for YEAR from Bucket)
-            .\data\CITY\Sensor_LOCATION_ID\YEAR=YEAR  (TARGET_PATH)
+            .\data\CITY\Sensor_LOCATION_ID\YEAR  (TARGET_PATH)
     '''
     try:
+        
+        #initialize s3 client
+        s3 = boto3.client('s3', config=Config(signature_version=UNSIGNED))
+        target_bucket = 'openaq-data-archive'
+        
+        #Make the City Directory
         cityPath = Path(f"D:/VSCode/Scripts/Python/AQIPredictor/data/{city}")
         cityPath.mkdir(parents=True, exist_ok=True)
-        for sensor in range (len(CitySensors[city] + 1)):
-            sensorPath = Path(f"D:/VSCode/Scripts/Python/AQIPredictor/data/{city}/Sensor_{CitySensors[city][sensor]}")
+        
+        #Make all assosciated Sensor Directories and get info for them
+        for sensor in CitySensors[city]:
+            sensorPath = Path(f"D:/VSCode/Scripts/Python/AQIPredictor/data/{city}/Sensor_{sensor}")
+            sensorPath.mkdir(exist_ok = True)
+            
+
+            #Get data from 2016 to 2025 (inclusive) for each sensor
+            for year in range (start_year, end_year + 1):
+                yearPath = Path(f"D:/VSCode/Scripts/Python/AQIPredictor/data/{city}/Sensor_{sensor}/{year}")
+                yearPath.mkdir(exist_ok = True)
+                
+                
+                #Formatting command (visually) to ensure arguments are correct
+                prefix = f"records/csv.gz/locationid={sensor}/year={year}/"
+                
+                #run command, check for any errors
+                try:
+                    response = s3.list_objects_v2(Bucket = target_bucket, Prefix = prefix)
+                    
+                    if 'Contents' not in response:
+                        print(f"        No data found for {year}")
+                        yearPath.rmdir()
+                        continue
+                    
+                    files = response['Contents']
+                    print(f"        Found {len(files)} files, downloading...")
+                    #count number of files found & downloaded
+                    
+                    for file in files:
+                        file_loc = file['Key']
+                        file_name = Path(file_loc).name
+                        local_file = yearPath / file_name
+                        
+                        s3.download_file(target_bucket, file_loc, str(local_file))
+                    
+                    print(f"        Downloaded {len(files)} files")
+                except Exception as e:
+                    print(f"        Error downloading data: {e}")
+                    if yearPath.exists() and not any(yearPath.iterdir()):
+                        yearPath.rmdir()
+                        
+
+            print(f"\nSuccessfully downloaded data for {city}")
     except Exception as e:
-        print(f"Error: {e}")
+        print(f"Error during download for {city}: {e}")
 
 
 
 if __name__ == "__main__":
-    sensorPath = Path(f"D:/VSCode/Scripts/Python/AQIPredictor/data/Tokyo/Sensor_{CitySensors['Tokyo'][0]}")
-    sensorPath.mkdir(parents=True, exist_ok=True)
-    print(f"Tokyo Directory for Sensor {CitySensors['Tokyo'][0]} created.")
+    """ Commented out so I don't accidentally redownload data and waste time
+    cities = ['Tokyo', 'Quebec', 'Berlin', 'London', 'Beijing', 'Delhi', 'Warsaw', 'Paris']
+    
+    for city in cities:
+        downloadData(city)
+        
+        print("\n" + "="*50)
+        print("All downloads completed")
+        print("="*50)
+        """

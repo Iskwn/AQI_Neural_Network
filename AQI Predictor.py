@@ -1,5 +1,5 @@
-import os
 import sys
+from pathlib import Path
 
 import torch
 import torch.nn as nn
@@ -11,7 +11,6 @@ import pandas as pd
 import matplotlib #Visualize Outputs
 
 from dotenv import load_dotenv
-from datetime import datetime, date #for prediction lengths
 
 #           Define the Neural Network
 class basicNetwork(nn.Module):
@@ -39,11 +38,8 @@ class basicNetwork(nn.Module):
         x = self.fc3(x)
         return x
     
-# #Fetch Environment variables (For API Key)
-load_dotenv()
-
-#Fetch Data for the model from OpenAQ
-def getData(city, pollutant = 'pm25',save_to_csv = True):
+#Fetch Data from Data folder
+def getData(city, pollutant = 'pm25'):
     '''
     Args:
         city (str): City name (e.g. Tokyo)
@@ -53,8 +49,30 @@ def getData(city, pollutant = 'pm25',save_to_csv = True):
     Returns:
         pandas.Dataframe: Air quality data
     '''
-
-
+    city_path = Path(f"D:/VSCode/Scripts/Python/AQIPredictor/data/{city}")
+    sensors = sorted([d for d in city_path.iterdir() if d.is_dir()])
+    print(sensors)
+    
+    print(f"Found {len(sensors)} sensors.")
+    
+    #Iterates through each Sensor
+    for sensor_path in sensors:
+        sensor_name = sensor_path.name
+        sensor_id = sensor_name.replace("Sensor_", "")
+        
+        #saves years into a list
+        years = sorted([x.name for x in sensor_path.iterdir() if x.is_dir()])
+        
+        print(f"Found data for {', '.join(years)} for sensor {sensor_id}")
+        print(f"SENSOR {sensor_id}")
+        for year in sensor_path.iterdir():
+            print(f"Iterating through {year.name}")
+            year_path = sensor_path.joinpath(year)
+            sensor_data = [x.name for x in year_path.iterdir()]
+            print(f"Finished Iterating through {year.name}")
+            print(f"found {len(sensor_data)} items")
+    
+    
 
 #           Training Parameters
 input_size = 5 #Placeholder as I don't have the data yet
