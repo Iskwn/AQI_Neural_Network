@@ -1,5 +1,4 @@
 import boto3
-import subprocess
 from pathlib import Path
 from botocore import UNSIGNED
 from botocore.client import Config
