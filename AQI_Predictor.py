@@ -1,5 +1,4 @@
 import sys
-from pathlib import Path
 
 import torch
 import torch.nn as nn
@@ -9,7 +8,7 @@ from torch.utils.data import DataLoader, TensorDataset
 import numpy as np
 import pandas as pd
 import matplotlib #Visualize Outputs
-from tqdm import tqdm #Progress Bar (for training loops and data things)
+from consolidate_data import consolidateData
 
 #           Define LSTM Neural Network
 class LSTM(nn.Module):
@@ -65,47 +64,6 @@ class LSTM(nn.Module):
         #Return Output
         return out
             
-#Fetch Data from Data folder for consolidation
-def consolidateData(city):
-    '''
-    Args:
-        city (str): City name (e.g. Tokyo)
-        
-    Returns:
-        pandas.Dataframe: Air quality data for the specified city
-    '''
-    city_path = Path(f"D:/VSCode/Scripts/Python/AQIPredictor/data/{city}")
-    city_data = pd.DataFrame()
-    sensors = sorted([d for d in city_path.iterdir() if d.is_dir()])
-    print(f"Found {len(sensors)} sensors." if len(sensors) != 1 else "Found 1 sensor.")
-    print("Beginning Data Collection...\n")
-    #Iterates through each Sensor
-    for sensor_path in tqdm(sensors, desc = f"Iterating through sensors in {city}", leave = True):
-        sensor_path: Path
-        sensor_name = sensor_path.name
-        sensor_id = sensor_name.replace("Sensor_", "")
-        sensor_data = pd.DataFrame()
-        #saves years into a list
-        years = sorted([x.name for x in sensor_path.iterdir() if x.is_dir()])
-        print(f"Found data for {', '.join(years)} for sensor {sensor_id}")
-        print(f"SENSOR {sensor_id}")
-        
-        #Iterates through each Year for the Sensor
-        for year in tqdm(years, desc= f"Iterating through years in sensor", leave = False):
-            year_path = sensor_path.joinpath(year)
-            csv_files = [x.name for x in year_path.iterdir()]
-
-            for file in tqdm(csv_files, desc= f"Adding data to {year} DataFrame", leave = False):
-                file_path = year_path.joinpath(file)
-                df = pd.read_csv(file_path, compression = 'gzip')
-                sensor_data = pd.concat([sensor_data, df], ignore_index = True)
-        city_data = pd.concat([city_data, sensor_data], ignore_index= True)
-    print(f"Finished Data Collection for {city}\n")
-    print(f"Total files collected: {len(city_data)}")
-    return city_data
-        
-    
-
 #           Training Parameters
 num_inputs = 5 
 hidden_size = 64 
@@ -120,56 +78,45 @@ num_workers = 4
 
 
 
-# #           Initialize model, loss function, and optimizer
-# model = LSTM(num_inputs, hidden_size)
-# criterion = nn.MSELoss() 
-# optimizer = optim.Adam(model.parameters(), lr=learning_rate)
+#           Initialize model, loss function, and optimizer
+model = LSTM(num_inputs, hidden_size)
+criterion = nn.MSELoss() 
+optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
-# #           Load and Preprocess Data
-# with torch.no_grad():
-#     #Placeholders
-#     data = pd.DataFrame(np.random.rand(num_samples,6)) # 5 features + 1 target
-#     data = data.dropna()
-    
-#     #normalize data
-#     data = (data- data.mean()) / data.std()
-    
-
-
-# #           Create Dataset and DataLoader
-# dataset_array = data.to_numpy()
-# X = torch.tensor(dataset_array[:, :-1], dtype = torch.float32) #Features
-# y = torch.tensor(dataset_array[:, -1], dtype = torch.float32).unsqueeze(1) #Fixes shape of the Target
-
-# dataset = TensorDataset(X, y)
-
-
-
+#           Potential Cities for Prediction
+cities = ['Tokyo', 'Quebec', 'Berlin', 'London', 'Beijing', 'Delhi', 'Warsaw', 'Paris']
 #           Program
 if __name__ == "__main__":
     #Test for CUDA
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    print(f'Using device: {device}')
+    model = model.to(device)
     
-    model = LSTM(num_inputs, hidden_size, num_layers, output_size).to(device)
-    print("Model initialized successfully.")
-    print(f"Model parameters: {sum(p.numel() for p in model.parameters())} total parameters")
+    #       Get City for Data Consolidation
+    print("Select City you wish to Predict the AQI for:\n")
+    for i, city in enumerate(cities):
+        print(f"{i+1}. {city}")
+    print("0. Exit Program\n")
     
-    print("\nReady for training on test data.")
-    print("Beginning forward pass test...")
+    city = int(input("Enter your choice: "))
     
-    x = torch.randn(batch_size, seq_length, num_inputs).to(device)
-    output: torch.Tensor = model(x)
-    print(f"\nInput shape: {x.shape}")
-    print(f"Output shape: {output.shape}")
+    if city == 0:
+        print("\nExiting Program.")
+        sys.exit()
+        
+    print(f"\nYou selected {cities[city-1]}\n")
+    print(f"\nBeginning Data Consolidation for {cities[city-1]}...\n")
+    cityData = consolidateData(cities[city-1])
     
-    criterion = nn.MSELoss()
-    optimizer = optim.Adam(model.parameters(), lr= learning_rate)
-    target = torch.randn(batch_size, 1).to(device)
-
-    loss = criterion(output, target)
-    print("Forward and Backward pass complete successfully.")
-    print(f"Test Loss: {loss.item():.4f}")
+    print(cityData.head())
     
-    print("\nModel Architecture:")
-    print(model)
+    print("\nData Consolidation Complete. Proceeding to Model Training...\n")
+    
+    #           Prepare Data for Training
+    pm25_indices = []
+    for index in cityData.index:
+        if cityData.at[index, 'parameter'] == 'pm25':
+            pm25_indices.append(index)
+            
+    print(f"Found {len(pm25_indices)} pm2.5 entries for {cities[city-1]} out of {len(cityData)} total entries. Accounting for approximately {round(len(pm25_indices) / len(cityData) * 100, 5)}%\n")
+    pm25_data = cityData.loc[pm25_indices].reset_index(drop=True)
+    print(pm25_data.head())

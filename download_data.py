@@ -86,7 +86,6 @@ def downloadData(city,start_year=2016,end_year=2025):
 
 
 if __name__ == "__main__":
-    """ Commented out so I don't accidentally redownload data and waste time
     cities = ['Tokyo', 'Quebec', 'Berlin', 'London', 'Beijing', 'Delhi', 'Warsaw', 'Paris']
     
     for city in cities:
@@ -95,4 +94,3 @@ if __name__ == "__main__":
         print("\n" + "="*50)
         print("All downloads completed")
         print("="*50)
-        """
