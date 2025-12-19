@@ -14,25 +14,27 @@ I decided to build this project to get a better understanding of how Machine Lea
 
 - Basic Network Completed
 - PyTorch Implementation started
+- Data Collection from OpenAQ
+- Find Suitable Network Structure
+- Update Network to the suitable structure
 
 ### IN PROGRESS
 
-- Data Collection from OpenAQ
-- Find Suitable Network Structure
+-Train Model and Evaluate Outputs
 
 ### PLANNED
 
-- Update Network to the suitable structure
-- Train Model and Evaluate Outputs
 - Improve Network based on weaknessed identified in previous step
 - Record Results with Matplotlib
+- Implement potential Multi-City Network
+- Allow the network to append to it's own database
 
-### LAST UPDATED 10/10/25
+### LAST UPDATED 12/18/25
 
 ## Technical Details
 
 -Framework: PyTorch  
--Architecture: Basic 3-layer feedforward neural network [Will Later Transition to a more appropriate stucture]  
+-Architecture: Long-Short Term Memory Network (LSTM)
 -Dataset: OpenAQ Air Quality measurements  
 -Current Features:  
     -  Historical PM2.5 Levels  
@@ -47,17 +49,18 @@ I decided to build this project to get a better understanding of how Machine Lea
 ## Challenges
 
 Overall Challenges during the Building Process:  
-Finding the optimal model type (10/9/25)  
-Append as necessary during Building
+Finding the optimal model type (10/9/25)
+Figuring out how to implement LSTM (chosen architecture) to fit project needs (11/1/25 - 11/30/25)
+Establishing proper data format (11/15/25 - 12/17/25)
 
 ## Future Work
 
-- Add more options for Predictions (e.g. predict PM2.5, PM10, O3, and NO2 instead of just PM2.5)  
-- Create a Web Interface for the Model (Likely via Streamlit)
+- Add more options for predictions (e.g. predict PM2.5, PM10, O3, and NO2 instead of just PM2.5)  
+- Create a Web Interface for the model (Likely via Streamlit)
 
-## Program Requirements
+## Program Specifications
 
-All Library Versions are not hard requirements, they are just the versions I am using at the time of creation.  
+All library versions are not requirements, they are just the versions I am using at the time of creation.  
 -Pytorch 2.8.0 or newer  
     [Pytorch Installer](https://pytorch.org)  
 -Numpy 2.3.2 or newer  

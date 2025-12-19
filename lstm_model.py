@@ -1,15 +1,9 @@
-import sys
-
 import torch
 import torch.nn as nn
-import torch.optim as optim
-from torch.utils.data import DataLoader, TensorDataset
 
-import numpy as np
-import pandas as pd
-import matplotlib #Visualize Outputs
-from consolidate_data import consolidateData
-
+"""
+File containing the base LSTM model to be used for training and predictions
+"""
 #           Define LSTM Neural Network
 class LSTM(nn.Module):
     #           class constructor   
@@ -63,60 +57,11 @@ class LSTM(nn.Module):
         
         #Return Output
         return out
-            
-#           Training Parameters
-num_inputs = 5 
-hidden_size = 64 
-output_size = 1
-seq_length = 20
-num_layers = 2
-num_epochs = 100
-learning_rate = 0.001
-batch_size = 64
-num_samples = 1000
-num_workers = 4
 
-
-
-#           Initialize model, loss function, and optimizer
-model = LSTM(num_inputs, hidden_size)
-criterion = nn.MSELoss() 
-optimizer = optim.Adam(model.parameters(), lr=learning_rate)
-
-#           Potential Cities for Prediction
-cities = ['Tokyo', 'Quebec', 'Berlin', 'London', 'Beijing', 'Delhi', 'Warsaw', 'Paris']
 #           Program
 if __name__ == "__main__":
-    #Test for CUDA
+    model = LSTM (num_inputs = 5, hidden_size = 64, num_layers = 4, output_size = 1, dropout = 0.2)
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    model = model.to(device)
+    model.to(device)
     
-    #       Get City for Data Consolidation
-    print("Select City you wish to Predict the AQI for:\n")
-    for i, city in enumerate(cities):
-        print(f"{i+1}. {city}")
-    print("0. Exit Program\n")
-    
-    city = int(input("Enter your choice: "))
-    
-    if city == 0:
-        print("\nExiting Program.")
-        sys.exit()
-        
-    print(f"\nYou selected {cities[city-1]}\n")
-    print(f"\nBeginning Data Consolidation for {cities[city-1]}...\n")
-    cityData = consolidateData(cities[city-1])
-    
-    print(cityData.head())
-    
-    print("\nData Consolidation Complete. Proceeding to Model Training...\n")
-    
-    #           Prepare Data for Training
-    pm25_indices = []
-    for index in cityData.index:
-        if cityData.at[index, 'parameter'] == 'pm25':
-            pm25_indices.append(index)
-            
-    print(f"Found {len(pm25_indices)} pm2.5 entries for {cities[city-1]} out of {len(cityData)} total entries. Accounting for approximately {round(len(pm25_indices) / len(cityData) * 100, 5)}%\n")
-    pm25_data = cityData.loc[pm25_indices].reset_index(drop=True)
-    print(pm25_data.head())
+    print(model)
