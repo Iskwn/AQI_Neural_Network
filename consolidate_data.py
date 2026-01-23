@@ -76,5 +76,5 @@ def consolidateData(city, show = False, prog = False):
     return city_data
 
 if __name__ == "__main__":
-    # cities = ['Tokyo', 'Quebec', 'Berlin', 'London', 'Beijing', 'Delhi', 'Warsaw', 'Paris']
-    print(consolidateData("Tokyo", show = True, prog = True))
+    cities = ['Tokyo', 'Quebec', 'Berlin', 'London', 'Beijing', 'Delhi', 'Warsaw', 'Paris']
+    print(consolidateData(cities[0], show = True, prog = True))

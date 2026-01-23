@@ -7,7 +7,7 @@ File containing the base LSTM model to be used for training and predictions
 #           Define LSTM Neural Network
 class LSTM(nn.Module):
     #           class constructor   
-    def __init__(self, num_inputs = 5, hidden_size = 64, num_layers = 2, output_size = 1, dropout=0.2):
+    def __init__(self, num_inputs = 5, hidden_size = 64, num_layers = 2, output_size = 1, dropout=0.4):
         """
         LSTM Neural Network for AQI Prediction
         
